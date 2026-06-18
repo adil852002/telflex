@@ -233,6 +233,10 @@ export default function ProductPage({ params }: PageProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [addedToCart, setAddedToCart] = useState(false);
 
+  const productImg = IMG.products[product.slug as keyof typeof IMG.products] ?? IMG.products.default;
+  const galleryImages = [productImg, IMG.about.bedroom, IMG.hero[1], IMG.hero[2]];
+  const [selectedImg, setSelectedImg] = useState(productImg);
+
   const addItem = useCartStore((s) => s.addItem);
 
   const variantKey = `${selectedSize}-${selectedTopType}-${selectedThickness}`;
@@ -305,18 +309,24 @@ export default function ProductPage({ params }: PageProps) {
         <div className="space-y-4">
           <div className="aspect-square rounded-3xl overflow-hidden relative sticky top-24 shadow-card-hover">
             <Image
-              src={IMG.products[product.slug as keyof typeof IMG.products] ?? IMG.products.default}
+              src={selectedImg}
               alt={`Telflex ${product.family} mattress`}
               fill
-              className="object-cover"
+              className="object-cover transition-opacity duration-300"
               priority
               sizes="(max-width:1024px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
           <div className="grid grid-cols-4 gap-3">
-            {[IMG.hero[0], IMG.hero[1], IMG.hero[2], IMG.products[product.slug as keyof typeof IMG.products] ?? IMG.products.default].map((src, i) => (
-              <div key={i} className="aspect-square rounded-xl overflow-hidden relative cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+            {galleryImages.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedImg(src)}
+                className={`aspect-square rounded-xl overflow-hidden relative transition-all border-2 ${
+                  selectedImg === src ? "border-primary scale-95" : "border-transparent hover:border-primary/50"
+                }`}
+              >
                 <Image
                   src={src}
                   alt={`Telflex ${product.family} view ${i + 1}`}
@@ -324,7 +334,7 @@ export default function ProductPage({ params }: PageProps) {
                   className="object-cover"
                   sizes="25vw"
                 />
-              </div>
+              </button>
             ))}
           </div>
         </div>
