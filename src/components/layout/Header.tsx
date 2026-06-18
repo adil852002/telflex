@@ -104,7 +104,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
-            <Image src="/logo.png" alt="Telflex Mattresses" width={140} height={40} className="h-10 w-auto object-contain" priority />
+            <Image src="/logo.png" alt="Telflex Mattresses" width={200} height={60} className="h-14 w-auto object-contain" priority />
           </Link>
 
           {/* Desktop nav */}
